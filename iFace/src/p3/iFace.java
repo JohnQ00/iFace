@@ -22,6 +22,13 @@ public class iFace {
     private static String[] fullname = new String[max];
     //////////////////////////////////////////////////////////////////////////////
 
+    //Friendlist//////////////////////////////////////////////////////////////////
+    private static String[][] friendlist = new String[max][max];
+    private static String[][] solicitations = new String [max][max];
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
     public static void main(String[] args) {
         System.out.println("\n||||| Welcome to iFace |||||\n");
         viewOptions();
@@ -37,7 +44,6 @@ public class iFace {
                 break;
             }
             else if (command == 1) {
-                System.out.println("You choosed Create an account.");
                 index++;
                 System.out.print("Login: ");
                 createLogin(index);
@@ -48,18 +54,19 @@ public class iFace {
                 System.out.println("\nNew account created.\n");
             }
             else if (command == 2) {
-                System.out.println("You choosed Login");
                 System.out.print("Insert your login: ");
                 String loginTemp = input.nextLine();
                 System.out.print("Insert your password: ");
                 String passwordTemp = input.nextLine();
                 user = signInTemp(loginTemp,passwordTemp);
-                viewProfileOptions();
-                int permission = input.nextInt();
-                profileControl(permission);
+                if(user != -1) {
+                    viewProfileOptions();
+                    int permission = input.nextInt();
+                    profileControl(permission);
+                }
             }
             else{
-                System.out.println("\nYou choosed a wrong option.\n");
+                System.out.println("\nYou chose a wrong option.\n");
             }
             viewOptions();
         }
@@ -70,7 +77,7 @@ public class iFace {
     }
 
     public static void viewProfileOptions() {
-        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n");
+        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n");
         System.out.print("As a logged user, write your option: ");
     }
 
@@ -103,18 +110,28 @@ public class iFace {
         return -1;
     }
 
+    public static int searchUsername(String t0){
+        for(int i = 0; i < max; i++){
+            if (t0.equals(username[i])){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static void profileControl(int permission) {
         while (true) {
             if (permission == 1) {
                 createProfile(user);
-                System.out.println("first " + age[user]);
             }
             else if (permission == 2) {
                 editProfile(user);
-                System.out.println("second " + age[user]);
+            }
+            else if (permission == 3) {
+                friendInteraction();
             }
             else if (permission == 0){
-                System.out.println("Exiting the profile managing.");
+                System.out.println("Exiting the profile manage.");
                 break;
             }
             viewProfileOptions();
@@ -125,8 +142,9 @@ public class iFace {
     public static void createProfile(int user) {
         System.out.print("\nInsert your Age: ");
         age[user] = input.nextInt();
+        input.nextLine();
         System.out.print("Insert your Full name: ");
-        fullname[user] = input.next();
+        fullname[user] = input.nextLine();
         System.out.print("Insert your E-mail: ");
         email[user] = input.next();
         System.out.print("Insert your Phone number: ");
@@ -166,6 +184,23 @@ public class iFace {
             }
             viewEditingProfileOptions();
             choice = input.nextInt();
+        }
+    }
+
+    public static void friendInteraction() {
+        System.out.println("||| Friend zone |||");
+        System.out.print("Insert a username: ");
+        String searchedUser = input.next();
+        int id = searchUsername(searchedUser);
+        System.out.println("Search result: " + username[id]);
+        System.out.print("Do you want to add this user as a friend ? (Yes/No)");
+        String friendRequest = input.next();
+
+        if (friendRequest.equalsIgnoreCase("Yes")) {
+            solicitations[]
+        }
+        else if (friendRequest.equalsIgnoreCase("No")) {
+
         }
     }
 }
