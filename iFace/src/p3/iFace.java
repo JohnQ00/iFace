@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class iFace {
     private static Scanner input = new Scanner(System.in);
     public static final int max = 502;
+    public static final int notFound = 501;
 
     //External definitions////////////////////////////////////////////////////////
     static int index = 0;
@@ -24,6 +25,13 @@ public class iFace {
     //Friendlist//////////////////////////////////////////////////////////////////
     private static int[][] friendlist = new int[max][max];
     private static int[][] solicitations = new int [max][max];
+    //////////////////////////////////////////////////////////////////////////////
+
+    //Community//////////////////////////////////////////////////////////////////
+    private static int[] communityLeader = new int[max];
+    private static int[][] communityMembers = new int [max][max];
+    private static String[] communityName = new String[max];
+    private static String[] communityDescription = new String[max];
     //////////////////////////////////////////////////////////////////////////////
 
 
@@ -76,7 +84,7 @@ public class iFace {
     }
 
     public static void viewProfileOptions() {
-        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n4 to Create a community\n");
+        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n4 to Create a community\n5 to Enter a community\n");
         System.out.print("As a logged user, write your option: ");
     }
 
@@ -115,7 +123,7 @@ public class iFace {
                 return i;
             }
         }
-        return 501;
+        return notFound;
     }
 
     public static void profileControl(int permission) {
@@ -131,6 +139,9 @@ public class iFace {
             }
             else if (permission == 4) {
                 communityCreation();
+            }
+            else if (permission == 5) {
+                enteringCommunity();
             }
             else if (permission == 0){
                 System.out.println("\nExiting the profile manage.\n");
@@ -232,6 +243,55 @@ public class iFace {
     }
 
     public static void communityCreation() {
-        System.out.println("\ncococococococococococ\n");
+        System.out.println("\nDo you want to create a community ? [Yes/No] \n");
+        String communityDecision = input.next();
+        if (communityDecision.equalsIgnoreCase("Yes")) {
+            communityLeader[user] = 1;
+            communityMembers[user][user] = 1;
+            input.nextLine();
+            System.out.print("\nWrite the name of your community: ");
+            communityName[user] = input.nextLine();
+            System.out.print("Write a description for your community: ");
+            communityDescription[user] = input.nextLine();
+            System.out.println("\nCommunity " + communityName[user] + " created.\n");
+            System.out.println("You are the leader of " + communityName[user] + ".\n");
+        }
+        else
+            return;
+    }
+
+    public static void enteringCommunity() {
+        System.out.print("\nEnter the name of the community you want to enter: ");
+        input.nextLine();
+        String communitySearched = input.nextLine();
+
+        int communityId = communitySearch(communitySearched);
+
+        if (communityId != notFound) {
+            System.out.println("\nCommunity " + communityName[communityId] + " found.");
+            System.out.println("Community description: " + communityDescription[communityId] + "\n");
+            System.out.println("Do you want to enter this community? [Yes/No] ");
+            String decision = input.next();
+
+            if (decision.equalsIgnoreCase("Yes")) {
+                System.out.println("You entered in " + communityName[communityId] + " community.\n");
+                communityMembers[communityId][user] = 1;
+            }
+            else {
+                System.out.println("\nYou refused to enter in a community.\n");
+            }
+        }
+        else {
+            System.out.println("\nThis community doesn't exist.\n");
+        }
+    }
+
+    public static int communitySearch(String communitySearched) {
+        for (int i = 0; i < max; i++) {
+            if (communitySearched.equals(communityName[i])) {
+                return i;
+            }
+        }
+        return notFound;
     }
 }
