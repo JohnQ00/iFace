@@ -2,10 +2,9 @@ package p3;
 import java.util.Scanner;
 public class iFace {
     private static Scanner input = new Scanner(System.in);
-    public static final int max = 500;
+    public static final int max = 502;
 
     //External definitions////////////////////////////////////////////////////////
-    private static int[] users = new int[max];
     static int index = 0;
     static int user = 0;
     //////////////////////////////////////////////////////////////////////////////
@@ -28,7 +27,6 @@ public class iFace {
     //////////////////////////////////////////////////////////////////////////////
 
 
-
     public static void main(String[] args) {
         System.out.println("\n||||| Welcome to iFace |||||\n");
         viewOptions();
@@ -40,7 +38,7 @@ public class iFace {
             input.nextLine();
 
             if (command == 0) {
-                System.out.println("||||| You closed the system. |||||");
+                System.out.println("\n||||| You closed the system. |||||\n");
                 break;
             }
             else if (command == 1) {
@@ -74,11 +72,11 @@ public class iFace {
     }
 
     public static void viewOptions(){
-        System.out.println("Choose an option:\n0 to Leave the page\n1 to Create an account\n2 to Login\n");
+        System.out.println("Choose an option:\n0 to Close the program\n1 to Create an account\n2 to Login\n");
     }
 
     public static void viewProfileOptions() {
-        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n");
+        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n4 to Create a community\n");
         System.out.print("As a logged user, write your option: ");
     }
 
@@ -117,7 +115,7 @@ public class iFace {
                 return i;
             }
         }
-        return -1;
+        return 501;
     }
 
     public static void profileControl(int permission) {
@@ -130,6 +128,9 @@ public class iFace {
             }
             else if (permission == 3) {
                 friendInteraction();
+            }
+            else if (permission == 4) {
+                communityCreation();
             }
             else if (permission == 0){
                 System.out.println("\nExiting the profile manage.\n");
@@ -193,15 +194,20 @@ public class iFace {
         System.out.print("Insert a username: ");
         String searchedUser = input.next();
         int id = searchUsername(searchedUser);
-        System.out.println("Search result: " + username[id] + "\n");
-        System.out.print("Do you want to add "+ username[id] + " this user as a friend ? [Yes/No] ");
-        String friendRequest = input.next();
-        System.out.println("\n");
-        if (friendRequest.equalsIgnoreCase("Yes")) {
-            solicitations[id][user] = user;
-        }
-        else if (friendRequest.equalsIgnoreCase("No")) {
+        if(id == 501) {
+            System.out.println("\nThe user doesn't exist.\n");
             return;
+        }
+        else {
+            System.out.println("Search result: " + username[id] + "\n");
+            System.out.print("Do you want to add " + username[id] + " this user as a friend ? [Yes/No] ");
+            String friendRequest = input.next();
+            System.out.println("Friend request was sent.\n");
+            if (friendRequest.equalsIgnoreCase("Yes")) {
+                solicitations[id][user] = user;
+            } else if (friendRequest.equalsIgnoreCase("No")) {
+                return;
+            }
         }
     }
 
@@ -213,13 +219,19 @@ public class iFace {
                 if (acceptance.equalsIgnoreCase("Yes")) {
                     friendlist[user][solicitations[user][i]] = 1;
                     System.out.println("\nNow, you and " + username[solicitations[user][i]] + " are friends.\n");
+                    solicitations[user][i] = 0;
                 }
-                else
+                else {
                     System.out.println("\nYou refused the request.\n");
-
+                    solicitations[user][i] = 0;
+                }
             }
             if (i == max)
                 return;
         }
+    }
+
+    public static void communityCreation() {
+        System.out.println("\ncococococococococococ\n");
     }
 }
