@@ -23,8 +23,8 @@ public class iFace {
     //////////////////////////////////////////////////////////////////////////////
 
     //Friendlist//////////////////////////////////////////////////////////////////
-    private static String[][] friendlist = new String[max][max];
-    private static String[][] solicitations = new String [max][max];
+    private static int[][] friendlist = new int[max][max];
+    private static int[][] solicitations = new int [max][max];
     //////////////////////////////////////////////////////////////////////////////
 
 
@@ -60,6 +60,7 @@ public class iFace {
                 String passwordTemp = input.nextLine();
                 user = signInTemp(loginTemp,passwordTemp);
                 if(user != -1) {
+                    checkRequests();
                     viewProfileOptions();
                     int permission = input.nextInt();
                     profileControl(permission);
@@ -131,7 +132,7 @@ public class iFace {
                 friendInteraction();
             }
             else if (permission == 0){
-                System.out.println("Exiting the profile manage.");
+                System.out.println("\nExiting the profile manage.\n");
                 break;
             }
             viewProfileOptions();
@@ -188,19 +189,37 @@ public class iFace {
     }
 
     public static void friendInteraction() {
-        System.out.println("||| Friend zone |||");
+        System.out.println("\n||| Friend zone |||\n");
         System.out.print("Insert a username: ");
         String searchedUser = input.next();
         int id = searchUsername(searchedUser);
-        System.out.println("Search result: " + username[id]);
-        System.out.print("Do you want to add this user as a friend ? (Yes/No)");
+        System.out.println("Search result: " + username[id] + "\n");
+        System.out.print("Do you want to add "+ username[id] + " this user as a friend ? [Yes/No] ");
         String friendRequest = input.next();
-
+        System.out.println("\n");
         if (friendRequest.equalsIgnoreCase("Yes")) {
-            solicitations[]
+            solicitations[id][user] = user;
         }
         else if (friendRequest.equalsIgnoreCase("No")) {
+            return;
+        }
+    }
 
+    public static void checkRequests() {
+        for (int i = 0; i < max; i++){
+            if (solicitations[user][i] != 0) {
+                System.out.println(username[solicitations[user][i]] + " wants to be your friend. Do you want to accept ? [Yes/No]");
+                String acceptance = input.next();
+                if (acceptance.equalsIgnoreCase("Yes")) {
+                    friendlist[user][solicitations[user][i]] = 1;
+                    System.out.println("\nNow, you and " + username[solicitations[user][i]] + " are friends.\n");
+                }
+                else
+                    System.out.println("\nYou refused the request.\n");
+
+            }
+            if (i == max)
+                return;
         }
     }
 }
