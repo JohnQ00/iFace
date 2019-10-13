@@ -17,4 +17,4 @@ Ao iniciar o programa, o usuário tem 3 opções com seus respectivos comandos:
 
 Ao selecionar "**1 para criar uma conta**" o usuário terá de escrever o seu login, username e sua senha.
 
-Sendo o **login** e **password** essenciais para a entrada na conta e o **username** para a visualização de outros usuários. 
+Sendo o **login** e **password** essenciais para a entrada na conta e o **username** essencial para a visualização de outros usuários. 
