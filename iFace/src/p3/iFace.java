@@ -35,6 +35,11 @@ public class iFace {
     private static String[] communityDescription = new String[max];
     //////////////////////////////////////////////////////////////////////////////
 
+    //Message/////////////////////////////////////////////////////////////////////
+    private static String[][][] messageBox = new String[max][max][max];
+    private static int[] messageSent= new int[max];
+    //////////////////////////////////////////////////////////////////////////////
+
 
     public static void main(String[] args) {
         System.out.println("\n||||| Welcome to iFace |||||\n");
@@ -66,6 +71,7 @@ public class iFace {
                 user = signInTemp(loginTemp, passwordTemp);
                 if (user != -1) {
                     checkRequests();
+                    checkMessageBox();
                     viewProfileOptions();
                     int permission = input.nextInt();
                     profileControl(permission);
@@ -82,7 +88,7 @@ public class iFace {
     }
 
     public static void viewProfileOptions() {
-        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n4 to Create a community\n5 to Enter a community\n");
+        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n4 to Create a community\n5 to Enter a community\n6 to Send a message\n");
         if (communityLeader[user] == 1) {
             System.out.println("10 to Manage your community\n");
         }
@@ -90,7 +96,7 @@ public class iFace {
     }
 
     public static void viewEditingProfileOptions() {
-        System.out.println("\nChoose the information you want to change: \n0 to none\n1 to age\n2 to full name\n3 to e-mail\n4 to phone number\n");
+        System.out.println("\nChoose the information you want to change: \n0 to none\n1 to age\n2 to full name\n3 to e-mail\n4 to phone number\n5 to login\n6 to username\n7 to password\n");
         System.out.print("Write your option: ");
     }
 
@@ -133,17 +139,26 @@ public class iFace {
         while (true) {
             if (permission == 1) {
                 createProfile(user);
-            } else if (permission == 2) {
+            }
+            else if (permission == 2) {
                 editProfile(user);
-            } else if (permission == 3) {
+            }
+            else if (permission == 3) {
                 friendInteraction();
-            } else if (permission == 4) {
+            }
+            else if (permission == 4) {
                 communityCreation();
-            } else if (permission == 5) {
+            }
+            else if (permission == 5) {
                 enteringCommunity();
-            } else if (permission == 10) {
+            }
+            else if (permission == 6) {
+                messageInteraction();
+            }
+            else if (permission == 10) {
                 manageCommunity();
-            } else if (permission == 0) {
+            }
+            else if (permission == 0) {
                 System.out.println("\nExiting the profile manage.\n");
                 break;
             }
@@ -175,19 +190,38 @@ public class iFace {
                 System.out.print("\nInsert your new age: ");
                 age[user] = input.nextInt();
                 System.out.println("\nAge was successfully changed.");
-            } else if (choice == 2) {
+            }
+            else if (choice == 2) {
                 System.out.print("\nInsert your new full name: ");
                 fullname[user] = input.next();
                 System.out.println("\nFullname was successfully changed.");
-            } else if (choice == 3) {
+            }
+            else if (choice == 3) {
                 System.out.print("\nInsert your new e-mail: ");
                 email[user] = input.next();
                 System.out.println("\nEmail was successfully changed.");
-            } else if (choice == 4) {
+            }
+            else if (choice == 4) {
                 System.out.print("\nInsert your new phone number: ");
                 phone[user] = input.nextInt();
                 System.out.println("\nPhone number was successfully changed.");
-            } else if (choice == 0) {
+            }
+            else if (choice == 5) {
+                System.out.print("\nInsert your new login: ");
+                login[user] = input.next();
+                System.out.println("\nLogin was successfully changed.");
+            }
+            else if (choice == 6) {
+                System.out.print("\nInsert your new username: ");
+                username[user] = input.next();
+                System.out.println("\nUsername was successfully changed.");
+            }
+            else if (choice == 7) {
+                System.out.print("\nInsert your new password: ");
+                password[user] = input.next();
+                System.out.println("\nPassword was successfully changed.");
+            }
+            else if (choice == 0) {
                 System.out.println("\nExiting the edition mode.\n");
                 break;
             }
@@ -231,7 +265,8 @@ public class iFace {
                     solicitations[user][i] = 0;
                 }
             }
-            if (i == max)
+            if (i == notFound)
+                System.out.println("\nYou have no friend requests.\n");
                 return;
         }
     }
@@ -346,5 +381,47 @@ public class iFace {
             else if (communityMembers[id][i] == removed)
                 System.out.println("\nThe user is not in your community.\n");
         }
+    }
+
+    public static void messageInteraction() {
+        int i = 0;
+        System.out.print("\nWrite the username you want to send the message: ");
+        input.nextLine();
+        String destiny = input.nextLine();
+        int id = searchUsername(destiny);
+
+        if (id != notFound) {
+            System.out.println("asdsadasdas");
+            while (true) {
+                if (messageBox[id][user][i] == null) {
+                    break;
+                }
+                i++;
+            }
+            System.out.print("\nWrite your message: ");
+            messageBox[id][user][i] = input.nextLine();
+            messageSent[id] = user;
+            System.out.println("i do send" + i);
+            System.out.println("\nThe message was sent.\n");
+        }
+        else
+            System.out.println("The user does not exist.");
+    }
+
+    public static void checkMessageBox() {
+        int i = 0;
+        if (messageSent[user] != 0) {
+            while(true) {
+                if (messageBox[user][messageSent[user]][i] == null) {
+                    break;
+                }
+                i++;
+            }
+            i--;
+            System.out.println("Message sent by " + username[messageSent[user]] + ": ");
+            System.out.println(messageBox[user][messageSent[user]][i] + "\n");
+        }
+        else
+            System.out.println("There's no message in your message box.\n");
     }
 }
