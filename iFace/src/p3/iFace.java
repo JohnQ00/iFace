@@ -2,8 +2,9 @@ package p3;
 import java.util.Scanner;
 public class iFace {
     private static Scanner input = new Scanner(System.in);
-    public static final int max = 502;
+    public static final int max = 503;
     public static final int notFound = 501;
+    public static final int removed = 502;
 
     //External definitions////////////////////////////////////////////////////////
     static int index = 0;
@@ -24,12 +25,12 @@ public class iFace {
 
     //Friendlist//////////////////////////////////////////////////////////////////
     private static int[][] friendlist = new int[max][max];
-    private static int[][] solicitations = new int [max][max];
+    private static int[][] solicitations = new int[max][max];
     //////////////////////////////////////////////////////////////////////////////
 
     //Community//////////////////////////////////////////////////////////////////
     private static int[] communityLeader = new int[max];
-    private static int[][] communityMembers = new int [max][max];
+    private static int[][] communityMembers = new int[max][max];
     private static String[] communityName = new String[max];
     private static String[] communityDescription = new String[max];
     //////////////////////////////////////////////////////////////////////////////
@@ -40,7 +41,7 @@ public class iFace {
         viewOptions();
         int command = -1;
 
-        while (command != 0){
+        while (command != 0) {
             System.out.print("Write your option: ");
             command = input.nextInt();
             input.nextLine();
@@ -48,8 +49,7 @@ public class iFace {
             if (command == 0) {
                 System.out.println("\n||||| You closed the system. |||||\n");
                 break;
-            }
-            else if (command == 1) {
+            } else if (command == 1) {
                 index++;
                 System.out.print("Login: ");
                 createLogin(index);
@@ -58,33 +58,34 @@ public class iFace {
                 System.out.print("Password: ");
                 createPassword(index);
                 System.out.println("\nNew account created.\n");
-            }
-            else if (command == 2) {
+            } else if (command == 2) {
                 System.out.print("Insert your login: ");
                 String loginTemp = input.nextLine();
                 System.out.print("Insert your password: ");
                 String passwordTemp = input.nextLine();
-                user = signInTemp(loginTemp,passwordTemp);
-                if(user != -1) {
+                user = signInTemp(loginTemp, passwordTemp);
+                if (user != -1) {
                     checkRequests();
                     viewProfileOptions();
                     int permission = input.nextInt();
                     profileControl(permission);
                 }
-            }
-            else{
+            } else {
                 System.out.println("\nYou chose a wrong option.\n");
             }
             viewOptions();
         }
     }
 
-    public static void viewOptions(){
+    public static void viewOptions() {
         System.out.println("Choose an option:\n0 to Close the program\n1 to Create an account\n2 to Login\n");
     }
 
     public static void viewProfileOptions() {
         System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n4 to Create a community\n5 to Enter a community\n");
+        if (communityLeader[user] == 1) {
+            System.out.println("10 to Manage your community\n");
+        }
         System.out.print("As a logged user, write your option: ");
     }
 
@@ -93,22 +94,24 @@ public class iFace {
         System.out.print("Write your option: ");
     }
 
-    public static String createLogin(int i){
+    public static String createLogin(int i) {
         login[i] = input.nextLine();
         return login[i];
     }
-    public static String createUsername(int i){
+
+    public static String createUsername(int i) {
         username[i] = input.nextLine();
         return username[i];
     }
-    public static String createPassword(int i){
+
+    public static String createPassword(int i) {
         password[i] = input.nextLine();
         return password[i];
     }
 
-    public static int signInTemp(String t0, String t1){
-        for(int i = 0; i < max; i++){
-            if (t0.equals(login[i]) && t1.equals(password[i])){
+    public static int signInTemp(String t0, String t1) {
+        for (int i = 0; i < max; i++) {
+            if (t0.equals(login[i]) && t1.equals(password[i])) {
                 System.out.println("\nLogin successful.\n");
                 return i;
             }
@@ -117,9 +120,9 @@ public class iFace {
         return -1;
     }
 
-    public static int searchUsername(String t0){
-        for(int i = 0; i < max; i++){
-            if (t0.equals(username[i])){
+    public static int searchUsername(String t0) {
+        for (int i = 0; i < max; i++) {
+            if (t0.equals(username[i])) {
                 return i;
             }
         }
@@ -130,20 +133,17 @@ public class iFace {
         while (true) {
             if (permission == 1) {
                 createProfile(user);
-            }
-            else if (permission == 2) {
+            } else if (permission == 2) {
                 editProfile(user);
-            }
-            else if (permission == 3) {
+            } else if (permission == 3) {
                 friendInteraction();
-            }
-            else if (permission == 4) {
+            } else if (permission == 4) {
                 communityCreation();
-            }
-            else if (permission == 5) {
+            } else if (permission == 5) {
                 enteringCommunity();
-            }
-            else if (permission == 0){
+            } else if (permission == 10) {
+                manageCommunity();
+            } else if (permission == 0) {
                 System.out.println("\nExiting the profile manage.\n");
                 break;
             }
@@ -170,28 +170,24 @@ public class iFace {
         int choice;
         viewEditingProfileOptions();
         choice = input.nextInt();
-        while(true){
+        while (true) {
             if (choice == 1) {
                 System.out.print("\nInsert your new age: ");
                 age[user] = input.nextInt();
                 System.out.println("\nAge was successfully changed.");
-            }
-            else if (choice == 2) {
+            } else if (choice == 2) {
                 System.out.print("\nInsert your new full name: ");
                 fullname[user] = input.next();
                 System.out.println("\nFullname was successfully changed.");
-            }
-            else if (choice == 3) {
+            } else if (choice == 3) {
                 System.out.print("\nInsert your new e-mail: ");
                 email[user] = input.next();
                 System.out.println("\nEmail was successfully changed.");
-            }
-            else if (choice == 4) {
+            } else if (choice == 4) {
                 System.out.print("\nInsert your new phone number: ");
                 phone[user] = input.nextInt();
                 System.out.println("\nPhone number was successfully changed.");
-            }
-            else if (choice == 0){
+            } else if (choice == 0) {
                 System.out.println("\nExiting the edition mode.\n");
                 break;
             }
@@ -205,11 +201,10 @@ public class iFace {
         System.out.print("Insert a username: ");
         String searchedUser = input.next();
         int id = searchUsername(searchedUser);
-        if(id == 501) {
+        if (id == 501) {
             System.out.println("\nThe user doesn't exist.\n");
             return;
-        }
-        else {
+        } else {
             System.out.println("Search result: " + username[id] + "\n");
             System.out.print("Do you want to add " + username[id] + " this user as a friend ? [Yes/No] ");
             String friendRequest = input.next();
@@ -223,7 +218,7 @@ public class iFace {
     }
 
     public static void checkRequests() {
-        for (int i = 0; i < max; i++){
+        for (int i = 0; i < max; i++) {
             if (solicitations[user][i] != 0) {
                 System.out.println(username[solicitations[user][i]] + " wants to be your friend. Do you want to accept ? [Yes/No]");
                 String acceptance = input.next();
@@ -231,8 +226,7 @@ public class iFace {
                     friendlist[user][solicitations[user][i]] = 1;
                     System.out.println("\nNow, you and " + username[solicitations[user][i]] + " are friends.\n");
                     solicitations[user][i] = 0;
-                }
-                else {
+                } else {
                     System.out.println("\nYou refused the request.\n");
                     solicitations[user][i] = 0;
                 }
@@ -255,8 +249,7 @@ public class iFace {
             communityDescription[user] = input.nextLine();
             System.out.println("\nCommunity " + communityName[user] + " created.\n");
             System.out.println("You are the leader of " + communityName[user] + ".\n");
-        }
-        else
+        } else
             return;
     }
 
@@ -275,13 +268,11 @@ public class iFace {
 
             if (decision.equalsIgnoreCase("Yes")) {
                 System.out.println("You entered in " + communityName[communityId] + " community.\n");
-                communityMembers[communityId][user] = 1;
-            }
-            else {
+                communityMembers[communityId][user] = user;
+            } else {
                 System.out.println("\nYou refused to enter in a community.\n");
             }
-        }
-        else {
+        } else {
             System.out.println("\nThis community doesn't exist.\n");
         }
     }
@@ -293,5 +284,67 @@ public class iFace {
             }
         }
         return notFound;
+    }
+
+    public static void manageCommunity() {
+        System.out.println("\nCommunity managing options: \n0 to Leave the page\n1 to Add members\n2 to Remove members\n");
+        System.out.print("Write your option: ");
+        int communityDecision = input.nextInt();
+        if (communityDecision == 1) {
+            addMembers();
+        } else if (communityDecision == 2) {
+            removeMembers();
+        } else
+            System.out.println("You are leaving the community managing page.");
+    }
+
+    public static void addMembers() {
+        System.out.print("Search a username to add to your community: ");
+        input.nextLine();
+        String member = input.nextLine();
+        int id = searchUsername(member);
+        if (id != notFound) {
+            System.out.print("\nDo you want to add " + username[id] + " in your community? [Yes/No] ");
+            String decision = input.next();
+            if (decision.equalsIgnoreCase("Yes")) {
+                communityMembers[id][user] = id;
+                System.out.println("\nMember added to your community.\n");
+            }
+        } else {
+            System.out.println("\nUser doesn't exist.\n");
+        }
+    }
+
+    public static void removeMembers() {
+        System.out.print("\nSearch a username to remove from your community: ");
+        input.nextLine();
+        String member = input.nextLine();
+        int id = searchUsername(member);
+        if (id == notFound) {
+            System.out.println("\nThe user does not exist.\n");
+            return;
+        }
+        for (int i = 0; i < max; i++) {
+            if (username[communityMembers[id][i]] != null) {
+                if ((username[communityMembers[id][i]]).equals(member)) {
+
+                    System.out.println("The user is in your community.\n");
+
+                    if (id != notFound) {
+                        System.out.print("Do you want to remove " + username[id] + " ? [Yes/No] ");
+                        String decision = input.next();
+                        if (decision.equalsIgnoreCase("Yes")) {
+                            communityMembers[id][user] = removed;
+                            System.out.println("\nYou removed the user from your community.\n");
+                            return;
+                        } else {
+                            System.out.println("\nYou refused to remove the user from your community.\n");
+                        }
+                    }
+                }
+            }
+            else if (communityMembers[id][i] == removed)
+                System.out.println("\nThe user is not in your community.\n");
+        }
     }
 }
