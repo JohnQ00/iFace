@@ -22,14 +22,23 @@ Sendo o **login** e **password** essenciais para a entrada na conta e o **userna
 Efetuando o login numa conta, irão aparecer as seguintes opções:
 
 >> 0 to Logout
+
 >> 1 to Create a profile
+
 >> 2 to Edit a profile
+
 >> 3 to Add a friend
+
 >> 4 to Create a community
+
 >> 5 to Enter a community
+
 >> 6 to Send a message
+
 >> 7 to Review your info
+
 >> 8 to Delete your account
+
 >> 9 to Send a message for one community
 
 Analisando por partes: 
