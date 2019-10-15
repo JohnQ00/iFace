@@ -18,14 +18,14 @@ public class iFace {
 
     //Profile/////////////////////////////////////////////////////////////////////
     private static int[] age = new int[max];
-    private static long[] phone = new long[max];
+    private static String[] phone = new String[max];
     private static String[] email = new String[max];
     private static String[] fullname = new String[max];
     //////////////////////////////////////////////////////////////////////////////
 
     //Friendlist//////////////////////////////////////////////////////////////////
     private static int[][] friendlist = new int[max][max];
-    private static int[][] solicitations = new int[max][max];
+    private static int[] solicitations = new int[max];
     //////////////////////////////////////////////////////////////////////////////
 
     //Community//////////////////////////////////////////////////////////////////
@@ -33,6 +33,7 @@ public class iFace {
     private static int[][] communityMembers = new int[max][max];
     private static String[] communityName = new String[max];
     private static String[] communityDescription = new String[max];
+    private static String[][][] communityMessages = new String[max][max][max];
     //////////////////////////////////////////////////////////////////////////////
 
     //Message/////////////////////////////////////////////////////////////////////
@@ -73,6 +74,7 @@ public class iFace {
                     System.out.println("Your username: " + username[user] + ".\n");
                     checkRequests();
                     checkMessageBox();
+                    checkCommunityMessages();
                     viewProfileOptions();
                     int permission = input.nextInt();
                     profileControl(permission);
@@ -89,7 +91,7 @@ public class iFace {
     }
 
     public static void viewProfileOptions() {
-        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n4 to Create a community\n5 to Enter a community\n6 to Send a message\n7 to Review your info\n8 to Delete your account\n");
+        System.out.println("What do you want to do ?\n0 to Logout\n1 to Create a profile\n2 to Edit a profile\n3 to Add a friend\n4 to Create a community\n5 to Enter a community\n6 to Send a message\n7 to Review your info\n8 to Delete your account\n9 to Send a message for one community\n");
         if (communityLeader[user] == 1) {
             System.out.println("10 to Manage your community\n");
         }
@@ -163,6 +165,9 @@ public class iFace {
                 deleteAccount();
                 return;
             }
+            else if (permission == 9) {
+                messageCommunity();
+            }
             else if (permission == 10) {
                 manageCommunity();
             }
@@ -184,7 +189,7 @@ public class iFace {
         System.out.print("Insert your E-mail: ");
         email[user] = input.next();
         System.out.print("Insert your Phone number: ");
-        phone[user] = input.nextInt();
+        phone[user] = input.next();
 
         System.out.println("\nProfile creation successful\n");
     }
@@ -211,7 +216,7 @@ public class iFace {
             }
             else if (choice == 4) {
                 System.out.print("\nInsert your new phone number: ");
-                phone[user] = input.nextInt();
+                phone[user] = input.next();
                 System.out.println("\nPhone number was successfully changed.");
             }
             else if (choice == 5) {
@@ -253,7 +258,7 @@ public class iFace {
             String friendRequest = input.next();
             System.out.println("Friend request was sent.\n");
             if (friendRequest.equalsIgnoreCase("Yes")) {
-                solicitations[id][user] = user;
+                solicitations[id] = user;
             }
             else if (friendRequest.equalsIgnoreCase("No")) {
                 return;
@@ -263,18 +268,19 @@ public class iFace {
 
     public static void checkRequests() {
         for (int i = 0; i < max; i++) {
-            if (solicitations[user][i] > 0) {
-                System.out.println(username[solicitations[user][i]] + " wants to be your friend. Do you want to accept ? [Yes/No]");
+            if (solicitations[user] > 0) {
+                System.out.println(username[solicitations[user]] + " wants to be your friend. Do you want to accept ? [Yes/No]");
                 String acceptance = input.next();
 
                 if (acceptance.equalsIgnoreCase("Yes")) {
-                    friendlist[user][solicitations[user][i]] = user;
-                    System.out.println("\nNow, you and " + username[solicitations[user][i]] + " are friends.\n");
-                    solicitations[user][i] = 0;
+                    friendlist[user][solicitations[user]] = solicitations[user];
+                    friendlist[solicitations[user]][user] = user;
+                    System.out.println("\nNow, you and " + username[solicitations[user]] + " are friends.\n");
+                    solicitations[user] = 0;
                 }
                 else {
                     System.out.println("\nYou refused the request.\n");
-                    solicitations[user][i] = 0;
+                    solicitations[user] = 0;
                 }
             }
             else if (i == notFound) {
@@ -403,6 +409,52 @@ public class iFace {
         }
     }
 
+    public static void messageCommunity() {
+        int i = 0;
+        System.out.print("\nWrite the name of a community: ");
+        input.nextLine();
+        String community = input.nextLine();
+        int communityId = communitySearch(community);
+        if (communityId != notFound) {
+            System.out.print("Write your message: ");
+            while (true) {
+                if (communityMessages[communityId][user][i] == null) {
+                    break;
+                }
+                i++;
+            }
+            communityMessages[communityId][user][i] = input.nextLine();
+            System.out.println("\nThe message was sent.\n");
+        }
+        else
+            System.out.println("\nCommunity not found.\n");
+    }
+
+    public static void checkCommunityMessages() {
+        for (int i = 0; i < max; i++) {
+            for (int j = 0; j < max; j++) {
+                if (user == communityMembers[i][j]) {
+                    printMessagesCommunity();
+                }
+            }
+        }
+    }
+
+    public static void printMessagesCommunity() {
+        for (int i = 0; i < max ; i++) {
+            for (int j = 0; j < max ; j++) {
+                for (int k = 0; k < max; k++) {
+                    if (communityMessages[i][j][k] != null) {
+                        if (!(communityMessages[i][j][k].equals("deleted"))) {
+                            System.out.println("A message to your community from " + username[j] + ": " + communityMessages[i][j][k]);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("\n");
+    }
+
     public static void messageInteraction() {
         int i = 0;
         System.out.print("\nWrite the username you want to send the message: ");
@@ -431,8 +483,10 @@ public class iFace {
         for (int i = 0; i < max; i++) {
             for (int j = 0; j < max; j++) {
                 if (messageBox[user][i][j] != null){
-                    System.out.println("Message sent by " + username[i] + ": ");
-                    System.out.println(messageBox[user][i][j] + "\n");
+                    if (!(messageBox[user][i][j].equals("deleted"))) {
+                        System.out.println("Message sent by " + username[i] + ": ");
+                        System.out.println(messageBox[user][i][j] + "\n");
+                    }
                 }
 
             }
@@ -455,14 +509,14 @@ public class iFace {
     public static void accountDeletion() {
 
         age[user] = removed;
-        phone[user] = removed;
+        phone[user] = "deleted";
         email[user] = "deleted";
         fullname[user] = "deleted";
 
         for (int i = 1; i < max; i++) {
             if ((username[i].equals(username[user]))) {
                 friendlist[i][user] = removed;
-                solicitations[i][user] = removed;
+                solicitations[user] = 0;
                 break;
             }
         }
@@ -478,6 +532,7 @@ public class iFace {
             for (int k = 0; k < max; k++) {
                 messageBox[j][user][k] = "deleted";
                 messageSent[user] = removed;
+                communityMessages[j][user][k] = "deleted";
             }
         }
 
@@ -499,8 +554,19 @@ public class iFace {
 
         System.out.println("Friend List: ");
         for (int i = 0; i < max; i++) {
-            if (username[friendlist[i][user]] != null)
-                System.out.println(username[friendlist[i][user]]);
+                if (username[friendlist[user][i]] != null) {
+                    if (!(username[friendlist[user][i]].equals(username[user]))) {
+                        if (!(username[friendlist[user][i]].equals("deleted")))
+                            System.out.println(username[friendlist[user][i]]);
+                    }
+                }
+                if (username[friendlist[i][user]] != null) {
+                    if (!(username[friendlist[i][user]].equals(username[user]))) {
+                        if (!(username[friendlist[i][user]].equals("deleted")))
+                            System.out.println(username[friendlist[i][user]]);
+                    }
+                }
+
         }
 
         if (communityLeader[user] == 1) {
@@ -531,13 +597,16 @@ public class iFace {
     }
 
     public static void printMessages() {
-        System.out.println("Messages: ");
+        System.out.println("\nMessages: ");
         for (int i = 0; i < max; i++) {
             for (int j = 0; j < max; j++) {
-                if (username[i] != null && messageBox[i][user][j] != null)
-                    System.out.println("Message sent by" + username[i] + ": " + messageBox[i][user][j]);
+                if (messageBox[i][user][j] != null) {
+                    if (!(messageBox[i][user][j].equals("deleted")))
+                        System.out.println("Message sent by " + username[user] + ": " + messageBox[i][user][j]);
+                }
             }
         }
+        System.out.println("\n");
     }
 
 }
