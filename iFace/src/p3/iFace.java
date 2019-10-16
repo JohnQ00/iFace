@@ -296,7 +296,7 @@ public class iFace {
 
         if (communityDecision.equalsIgnoreCase("Yes")) {
             communityLeader[user] = 1;
-            communityMembers[user][user] = 1;
+            communityMembers[user][user] = user;
             input.nextLine();
 
             System.out.print("\nWrite the name of your community: ");
@@ -452,7 +452,6 @@ public class iFace {
                 }
             }
         }
-        System.out.println("\n");
     }
 
     public static void messageInteraction() {
@@ -488,7 +487,6 @@ public class iFace {
                         System.out.println(messageBox[user][i][j] + "\n");
                     }
                 }
-
             }
         }
     }
@@ -566,11 +564,58 @@ public class iFace {
                             System.out.println(username[friendlist[i][user]]);
                     }
                 }
-
         }
-
+        //o usuario so pode ser lider de uma comunidade
         if (communityLeader[user] == 1) {
-            System.out.println("\nYou are a community leader.");
+            System.out.println("\nYou are a community leader.\n");
+            System.out.println("Leading the following community: " + communityName[user]);
+            for (int c = 0; c < max; c++) {
+                printMembersCommunity(c,user);
+            }
+        }
+        System.out.println();
+
+        printAllCommunities(user);
+
+        printMessages();
+    }
+
+    public static void printAllCommunities(int user) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++){
+                if (user == communityMembers[i][j]) {
+                    if (communityName[i] != null) {
+                        System.out.println("Community name: " + communityName[i]);
+                        System.out.println("\nMembers: ");
+                    }
+                    //System.out.print(communityMembers[i][j] + " ");
+                    printMembersCommunity(i, j);
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static void printMembersCommunity(int x, int y) {
+        if (username[communityMembers[x][y]] != null)
+            if (!(username[communityMembers[x][y]].equals("deleted")))
+                System.out.println(username[communityMembers[x][y]]);
+    }
+
+    public static void printMessages() {
+        System.out.println("\nMessages: ");
+        for (int i = 0; i < max; i++) {
+            for (int j = 0; j < max; j++) {
+                if (messageBox[i][user][j] != null) {
+                    if (!(messageBox[i][user][j].equals("deleted")))
+                        System.out.println("Message sent by " + username[user] + ": " + messageBox[i][user][j]);
+                }
+            }
+        }
+        System.out.println("\n");
+    }
+
+}are a community leader.");
             for (int j = 0; j < max; j++) {
                 if (username[communityMembers[j][user]] != null) {
                     System.out.println("Members: " + username[communityMembers[j][user]]);
