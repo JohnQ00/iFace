@@ -85,4 +85,5 @@ Nesta opção, o usuário removerá todas as suas informações do sistema, send
 Esta funcionalidade permite o usuário enviar mensagens para qualquer comunidade do sistema, independente dele ser participante ou não dela.
 
 Dúvidas sobre o funcionamento do código ?
+
 Favor entrar em contato pelo e-mail: **jddcp@ic.ufal.br**
