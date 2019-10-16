@@ -10,17 +10,17 @@ Projeto Java (AB1) - iFace
 
 Ao iniciar o programa, o usuário tem 3 opções com seus respectivos comandos: 
 
->> 0 para fechar o programa;
+>> 0 to Close the System
 
->> 1 para criar uma conta
+>> 1 to Create an account
 
->> 2 para fazer login numa conta.
+>> 2 to Login
 
-Ao selecionar "**1 para criar uma conta**" o usuário terá de escrever o seu login, username e sua senha.
+Ao selecionar **1 to Create an account** o usuário terá de escrever o seu login, username e sua senha.
 
 Sendo o **login** e **password** essenciais para a entrada na conta e o **username** essencial para a visualização de outros usuários.
 
-Efetuando o login numa conta, irão aparecer as seguintes opções:
+Efetuando o login numa conta por meio da opção **2 to Login**, irão aparecer as seguintes opções:
 
 >> 0 to Logout
 
@@ -83,6 +83,8 @@ Nesta opção, o usuário removerá todas as suas informações do sistema, send
 >>9 to Send a message for one community
 
 Esta funcionalidade permite o usuário enviar mensagens para qualquer comunidade do sistema, independente dele ser participante ou não dela.
+
+Para sair do sistema, diante da tela principal, é necessário apenas utilizar o comando **0 to Close the system**.
 
 Dúvidas sobre o funcionamento do código ?
 
