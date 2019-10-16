@@ -610,6 +610,10 @@ public class iFace {
                     if (!(messageBox[i][user][j].equals("deleted")))
                         System.out.println("Message sent by " + username[user] + ": " + messageBox[i][user][j]);
                 }
+                if (messageCommunity[i][user][j] != null) {
+                	if (!(messageCommunity[i][user][j].equals("deleted")))
+                        System.out.println("Message sent by " + username[user] + ": " + messageCommunity[i][user][j]);
+                }
             }
         }
         System.out.println("\n");
