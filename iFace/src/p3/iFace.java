@@ -496,8 +496,8 @@ public class iFace {
         String del = input.next();
 
         if (del.equalsIgnoreCase("Yes")) {
-                accountDeletion();
-                return;
+            accountDeletion();
+            return;
         }
         else {
             System.out.println("Deletion cancelled.");
@@ -552,20 +552,20 @@ public class iFace {
 
         System.out.println("Friend List: ");
         for (int i = 0; i < max; i++) {
-                if (username[friendlist[user][i]] != null) {
-                    if (!(username[friendlist[user][i]].equals(username[user]))) {
-                        if (!(username[friendlist[user][i]].equals("deleted")))
-                            System.out.println(username[friendlist[user][i]]);
-                    }
+            if (username[friendlist[user][i]] != null) {
+                if (!(username[friendlist[user][i]].equals(username[user]))) {
+                    if (!(username[friendlist[user][i]].equals("deleted")))
+                        System.out.println(username[friendlist[user][i]]);
                 }
-                if (username[friendlist[i][user]] != null) {
-                    if (!(username[friendlist[i][user]].equals(username[user]))) {
-                        if (!(username[friendlist[i][user]].equals("deleted")))
-                            System.out.println(username[friendlist[i][user]]);
-                    }
+            }
+            if (username[friendlist[i][user]] != null) {
+                if (!(username[friendlist[i][user]].equals(username[user]))) {
+                    if (!(username[friendlist[i][user]].equals("deleted")))
+                        System.out.println(username[friendlist[i][user]]);
                 }
+            }
         }
-        //o usuario so pode ser lider de uma comunidade
+
         if (communityLeader[user] == 1) {
             System.out.println("\nYou are a community leader.\n");
             System.out.println("Leading the following community: " + communityName[user]);
@@ -581,18 +581,21 @@ public class iFace {
     }
 
     public static void printAllCommunities(int user) {
+        String repetition = " ";
+        System.out.println();
         for (int i = 0; i < max; i++) {
-            for (int j = 0; j < max; j++){
-                if (user == communityMembers[i][j]) {
+            for (int j = 0; j < max; j++) {
+                if (user == communityMembers[user][i]) {
                     if (communityName[i] != null) {
-                        System.out.println("Community name: " + communityName[i]);
-                        System.out.println("\nMembers: ");
+                        if (!(repetition.equals(communityName[i]))) {
+                            System.out.println("Community name: " + communityName[i]);
+                            System.out.println("\nMembers: ");
+                            repetition = communityName[i];
+                        }
                     }
-                    //System.out.print(communityMembers[i][j] + " ");
-                    printMembersCommunity(i, j);
+                    printMembersCommunity(j, i);
                 }
             }
-            System.out.println();
         }
     }
 
@@ -610,9 +613,9 @@ public class iFace {
                     if (!(messageBox[i][user][j].equals("deleted")))
                         System.out.println("Message sent by " + username[user] + ": " + messageBox[i][user][j]);
                 }
-                if (messageCommunity[i][user][j] != null) {
-                	if (!(messageCommunity[i][user][j].equals("deleted")))
-                        System.out.println("Message sent by " + username[user] + ": " + messageCommunity[i][user][j]);
+                if (communityMessages[i][user][j] != null) {
+                    if (!(communityMessages[i][user][j].equals("deleted")))
+                        System.out.println("Message sent by " + username[user] + ": " + communityMessages[i][user][j]);
                 }
             }
         }
