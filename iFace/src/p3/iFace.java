@@ -581,8 +581,8 @@ public class iFace {
     }
 
     public static void printAllCommunities(int user) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++){
+        for (int i = 0; i < max; i++) {
+            for (int j = 0; j < max; j++){
                 if (user == communityMembers[i][j]) {
                     if (communityName[i] != null) {
                         System.out.println("Community name: " + communityName[i]);
@@ -600,45 +600,6 @@ public class iFace {
         if (username[communityMembers[x][y]] != null)
             if (!(username[communityMembers[x][y]].equals("deleted")))
                 System.out.println(username[communityMembers[x][y]]);
-    }
-
-    public static void printMessages() {
-        System.out.println("\nMessages: ");
-        for (int i = 0; i < max; i++) {
-            for (int j = 0; j < max; j++) {
-                if (messageBox[i][user][j] != null) {
-                    if (!(messageBox[i][user][j].equals("deleted")))
-                        System.out.println("Message sent by " + username[user] + ": " + messageBox[i][user][j]);
-                }
-            }
-        }
-        System.out.println("\n");
-    }
-
-}are a community leader.");
-            for (int j = 0; j < max; j++) {
-                if (username[communityMembers[j][user]] != null) {
-                    System.out.println("Members: " + username[communityMembers[j][user]]);
-                }
-                 printAllCommunities(j);
-            }
-        }
-        else {
-            System.out.println("\nYou are not a community leader.");
-            for (int k = 0; k < max; k++) {
-                printAllCommunities(k);
-            }
-        }
-        printMessages();
-    }
-
-    public static void printAllCommunities(int j) {
-        if (username[communityMembers[j][user]] != null) {
-            if ((username[communityMembers[j][user]].equals(username[user]))) {
-                System.out.println("Community name: " + communityName[j]);
-                System.out.println("Community description: " + communityDescription[j]);
-            }
-        }
     }
 
     public static void printMessages() {
