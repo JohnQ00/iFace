@@ -1,5 +1,6 @@
 # iFace
-Projeto Java - iFace
+Projeto Java (AB1) - iFace
+
 
 **Aluno:**  John Davi Dutra Canuto Pires
 
@@ -46,3 +47,9 @@ Analisando por partes:
 >>0 to Logout
 
 Ao utilizar essa opção, a conta é desconectada e o programa retornará para a tela inicial. 
+
+>>1 to Create a profile
+
+
+
+
